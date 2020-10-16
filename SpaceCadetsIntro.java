@@ -3,23 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spacecadetsintro;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.StringJoiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,56 +79,4 @@ public class SpaceCadetsIntro {
         int endIndex = source.indexOf("<", startIndex)-1;
         return source.substring(startIndex, endIndex);
     }
-    
-    public final ArrayList<String> fetchEmails(String source){
-        ArrayList<String> emails = new ArrayList<>();
-        
-        String[] invalidChars = {"\"", "'", ":", "<", ">"};
-        //Get the number of emails by the number of instances of the @ symbol
-        int numEmails = (source.split("@", -1).length) - 1;
-        
-        //for each email found
-        for(int i = 0; i < numEmails; i++){
-            //Get the ith email in the source code
-            int emailIndex = nthOccurrence(source, "@", i);
-              if(emailIndex > 0 && emailIndex < source.length()){
-              //reverse the string to find the last instance of the > character
-              String reverseString = new StringBuilder(source.substring(0, emailIndex)).reverse().toString();
-              int startIndex = emailIndex - reverseString.indexOf(">");
-              
-              //find the next instance of the < character to end the substring
-              int endIndex = source.indexOf("<", emailIndex);
-              
-              String email = source.substring(startIndex, endIndex);
-              boolean validEmail = true;
-              for(String s : invalidChars){
-                if(email.contains(s)){
-                  validEmail = false;
-                }
-              }
-              if(validEmail){
-                emails.add(email);
-              }
-            }
-        }
-        return emails;
-    }
-    
-    public static int nthOccurrence(String str1, String str2, int n) {
-        String tempStr = str1;
-        int tempIndex;
-        int finalIndex = 0;
-        for(int occurrence = 0; occurrence < n ; occurrence += 1){
-            tempIndex = tempStr.indexOf(str2);
-            if(tempIndex == -1){
-                finalIndex = 0;
-                break;
-            }
-            tempIndex ++;
-            tempStr = tempStr.substring(tempIndex);
-            finalIndex += tempIndex;
-        }
-        
-        return --finalIndex;
-    } 
 }
